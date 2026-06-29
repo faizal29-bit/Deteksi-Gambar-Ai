@@ -18,18 +18,6 @@ Dataset terdiri dari dua kelas, yaitu:
 HUMAN → Gambar asli (Real Image)
 AI → Gambar hasil Artificial Intelligence
 
-Struktur dataset:
-
-dataset/
-├── AI/
-│   ├── image1.jpg
-│   ├── image2.jpg
-│   └── ...
-└── HUMAN/
-    ├── image1.jpg
-    ├── image2.jpg
-    └── ...
-
 ## Model yang Digunakan
 
 Model yang digunakan adalah model SMOGY AI Images Detector dari Hugging Face.
