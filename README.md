@@ -1,8 +1,49 @@
-# 🤖 AI Image Detector
+## Deteksi Gambar AI Menggunakan Model SMOGY (Swin Transformer)
+Deskripsi
 
-Web server untuk mendeteksi apakah sebuah gambar dibuat oleh AI atau merupakan gambar asli, menggunakan model fine-tuned berbasis HuggingFace Transformers.
+Proyek ini merupakan implementasi model Deep Learning untuk mendeteksi apakah suatu gambar merupakan gambar asli (Human) atau gambar hasil Artificial Intelligence (AI-Generated).
 
----
+Model yang digunakan adalah SMOGY AI Images Detector berbasis Swin Transformer yang kemudian dilakukan fine-tuning menggunakan dataset AI vs Human Generated Dataset dari Kaggle.
+
+## Dataset
+
+Dataset yang digunakan berasal dari Kaggle:
+
+AI vs Human Generated Dataset
+
+https://www.kaggle.com/datasets/alessandrasala79/ai-vs-human-generated-dataset
+
+Dataset terdiri dari dua kelas, yaitu:
+
+HUMAN → Gambar asli (Real Image)
+AI → Gambar hasil Artificial Intelligence
+
+Struktur dataset:
+
+dataset/
+├── AI/
+│   ├── image1.jpg
+│   ├── image2.jpg
+│   └── ...
+└── HUMAN/
+    ├── image1.jpg
+    ├── image2.jpg
+    └── ...
+
+## Model yang Digunakan
+
+Model yang digunakan adalah model SMOGY AI Images Detector dari Hugging Face.
+
+https://huggingface.co/Smogy/SMOGY-Ai-images-detector
+
+Model ini dibangun menggunakan arsitektur Swin Transformer (Shifted Window Transformer) yang telah melalui proses pretrained sehingga memiliki kemampuan awal dalam mengenali karakteristik gambar AI maupun gambar asli.
+
+Pada program ini diterapkan metode Transfer Learning, yaitu:
+
+Layer backbone Swin Transformer dibekukan (freeze)
+Hanya layer classifier yang dilatih kembali (fine-tuning)
+
+Pendekatan ini membuat proses pelatihan lebih cepat, membutuhkan data yang lebih sedikit, serta mampu mempertahankan performa model.
 
 ## 📁 Struktur Folder
 
@@ -22,91 +63,5 @@ ai-detector/
 ├── requirements.txt          ← daftar dependensi Python
 ├── run_server.bat            ← launcher Windows
 └── README.md
-```
 
----
-
-## ⚙️ Setup
-
-### 1. Letakkan file model
-Download file dari Google Drive dan taruh di folder `model/`:
-- `model.safetensors`
-- `config.json`
-- `detector_config.json`
-
-### 2. Edit `detector_config.json`
-Sesuaikan label dengan hasil training kamu:
-```json
-{
-  "labels": ["Real", "AI Generated"],
-  "threshold": 0.5
-}
-```
-> **Penting:** urutan label harus sesuai dengan `id2label` di `config.json`  
-> Contoh: jika `id2label = {"0": "REAL", "1": "FAKE"}` → labels = `["REAL", "FAKE"]`
-
-### 3. Buat virtual environment (opsional tapi disarankan)
-```bash
-python -m venv venv
-venv\Scripts\activate     # Windows
-source venv/bin/activate  # Linux/Mac
-```
-
-### 4. Install dependensi
-```bash
-pip install -r requirements.txt
-```
-> Untuk CPU saja, ganti torch dengan versi CPU:
-> ```bash
-> pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-> ```
-
----
-
-## 🚀 Menjalankan Server
-
-**Windows:**
-```
-Klik dua kali run_server.bat
-```
-
-**Manual (semua OS):**
-```bash
-python app.py
-```
-
-Buka browser di: **http://localhost:5000**
-
----
-
-## 🌐 API Endpoint
-
-| Method | Endpoint   | Deskripsi                          |
-|--------|------------|------------------------------------|
-| GET    | `/`        | Halaman web utama                  |
-| GET    | `/health`  | Status server & device             |
-| POST   | `/predict` | Prediksi gambar (form-data: image) |
-
-### Contoh response `/predict`:
-```json
-{
-  "prediction": "AI Generated",
-  "prediction_type": "ai",
-  "confidence": 94.73,
-  "scores": [
-    {"label": "Real",         "score": 5.27,  "type": "real"},
-    {"label": "AI Generated", "score": 94.73, "type": "ai"}
-  ]
-}
-```
-
----
-
-## 🔧 Troubleshooting
-
-| Masalah | Solusi |
-|---------|--------|
-| `Cannot load model` | Pastikan `config.json` ada dan valid (HuggingFace format) |
-| `KeyError label` | Cek urutan label di `detector_config.json` |
-| `CUDA out of memory` | Tidak ada GPU, model otomatis pakai CPU |
-| File tidak ditemukan | Pastikan `model/` berisi ketiga file model |
+# folder fine-tunning model adalah program python yang digunakan untuk training model SMOGY menggunakan dataset alesandra
